@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Sezona{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "golyapp/archiv.css" %}">
+
+{% endblock css_files %}
+{% block content %}
+<div class="tlac">
+    <a class="button" href="{% url "homepage" %}">Návrat</a>
+    <a class="button" href="{% url "nation" %}">Národy</a>
+    <a href="{% url "klub" %}" class="button">Klub</a>
+    <a href="{% url "czech" %}" class="button">Slováci</a>
+</div>
+<form method="POST">
+    {% csrf_token %}
+          
+        <select name="vf" id="vstup" onchange="this.form.submit()"> 
+            {% for s in sezony %}
+            <option value="{{ s }}" {% if s|stringformat:"s" == vybrata|stringformat:"s" %}selected{% endif %}>
+                {{ s }}
+            </option>
+            {% endfor %}
+        </select>
+    
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Por.</th>
+            <th>Meno</th>
+            <th>Poz.</th>
+            <th>Záp.</th>
+            <th>G</th>
+            <th>A</th>
+            <th>B</th>
+            <th>+-</th>
+            <th>Vyl.</th>
+            <th>GvP</th>
+            <th>GvO</th>
+            <th>VG</th>
+            <th>GvOT</th>
+            <th>S</th>
+            <th>%st</th>
+            <th>%buly</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for i in sta  %}
+    <tr>
+        <td>{{forloop.counter}}.</td>
+        <td><a href="{% url "detp" i.id_player %}">{{i.meno}}</a></td>
+        <td>{{i.pozicia}}</td>
+        
+        
+        <td class="vpravo">{{i.sumazapasov|intcomma}}</td>
+        <td class="vpravo">{{i.sumagolov}}</td>
+        <td class="vpravo">{{i.sumaasistencií|intcomma}}</td>
+        <td class="vpravo">{{i.sumabodov|intcomma}}</td>
+        <td class="vpravo">{{i.sumaplus}}</td>
+        <td class="vpravo">{{i.sumav|intcomma}}</td>
+        <td class="vpravo">{{i.sumagvp}}</td>
+        <td class="vpravo">{{i.sumagvo}}</td>
+        <td class="vpravo">{{i.sumav_g}}</td>
+        <td class="vpravo">{{i.sumagvot}}</td>
+        <td class="vpravo">{{i.sumastrely|intcomma}}</td>
+        <td class="vpravo">{{i.priemerperc|floatformat:2}}</td>
+        <td class="vpravo">{{i.priemerbuly|floatformat:2}}</td>
+        
+    </tr>
+    {% endfor %}
+    </tbody>
+    
+</table>
+
+
+
+{% endblock content %}

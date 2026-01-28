@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Slovaci{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "golyapp/slovaci.css" %}">
+{% endblock css_files %}
+{% block content %}
+<div class="tlac">
+    <a class="button" href="{% url "homepage" %}">Návrat</a>
+    <a class="button" href="{% url "archivne" %}">Sezóny</a>
+    <a class="button" href="{% url "klub" %}">Klub</a>
+    <a href="{% url "czech" %}" class="button">Slováci</a>
+
+
+</div>    
+<form method="POST">
+    {% csrf_token %}
+    <select name="narod" onchange="this.form.submit()">
+        {% for n in nation %}
+            <option value="{{ n }}" {% if n == vybratie %}selected{% endif %}>{{ n }}</option>
+        {% endfor %}
+    </select>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Por.</th>
+            <th>Meno</th>
+            <th>Poz.</th>
+            <th class="vpravo">Z</th>
+            <th class="vpravo">G</th>
+            <th class="vpravo">A</th>
+            <th class="vpravo">B</th>
+            <th class="vpravo">+-</th>
+            <th class="vpravo">Vyl.</th>
+            <th class="vpravo">GvP</th>
+            <th class="vpravo">GvO</th>
+            <th class="vpravo">VG</th>
+            <th class="vpravo">GvOT</th>
+            <th class="vpravo">S</th>
+            <th class="vpravo">%s</th>
+            <th class="vpravo">%b</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in stat %}
+        <tr>
+            <td>{{forloop.counter}}.</td>
+            <td><a href="{% url "detp" i.id_player %}">{{i.meno}}</a></td>
+            <td>{{i.pozicia}}</td>
+            <td class="vpravo">{{i.szapasy|intcomma}}</td>
+            <td class="vpravo">{{i.sg}}</td>
+            <td class="vpravo">{{i.sa}}</td>
+            <td class="vpravo">{{i.sb|intcomma}}</td>
+            <td class="vpravo">{{i.splusminus}}</td>
+            <td class="vpravo">{{i.sv|intcomma}}</td>
+            <td class="vpravo">{{i.sgvp}}</td>
+            <td class="vpravo">{{i.sgvo}}</td>
+            <td class="vpravo">{{i.sv_g}}</td>
+            <td class="vpravo">{{i.sgvot}}</td>
+            <td class="vpravo">{{i.sstrely|intcomma}}</td>
+            <td class="vpravo">{{i.aperc_strel|floatformat:2}}</td>
+            <td class="vpravo">{{i.abuly|floatformat:2}}</td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}Detail{% endblock title %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "golyapp/detail.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+<div class="tlac">
+    <a class="button" href="{% url "homepage" %}">Návrat</a>
+    <a class="button" href="{% url "archivne" %}">Sezóny</a>
+    <a class="button" href="{% url "nation" %}">Národy</a>
+    <a href="{% url "czech" %}" class="button">Slováci</a>
+</div>
+<h1>Detail hrača</h1>
+<h2>{{hrac.meno}} #{{udaje.cislo_dresu}} </h2>
+<div class="container">
+
+<img src="{{hrac.hlava}}" alt="">
+
+<table class="udaje">
+   
+    <tr>
+        <td>id hráča:</td>
+        <td>{{udaje.id_player}}</td>
+    </tr>
+    <tr>
+        <td>držanie hok.:</td>
+        <td>{{udaje.drzanie}}</td>
+    </tr>
+    <tr>
+        <td>Výška hráča:</td>
+        <td>{{udaje.vyska}} cm</td>
+    </tr>
+    <tr>
+        <td>Hmotnosť hráča:</td>
+        <td>{{udaje.vaha}} kg</td>
+    </tr>
+    <tr>
+        <td>Dátum narodenia:</td>
+        <td>{{udaje.datum_nar}}</td>
+    </tr>
+    <tr>
+        <td>Miesto narodenia:</td>
+        <td>{{udaje.mesto_nar}}, {{udaje.krajina_nar}}</td>
+    </tr>
+
+</table>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Sezona</th>
+            <th>klub</th>
+            <th>Z</th>
+            <th>G</th>
+            <th>A</th>
+            <th>B</th>
+            <th>+-</th>
+            <th>V</th>
+            <th>GvP</th>
+            <th>GvO</th>
+            <th>VG</th>
+            <th>GvOT</th>
+            <th>Strely</th>
+            <th>% strel</th>
+            <th>%buly</th>
+
+
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for i in stat %}
+    <tr>
+        <td>{{forloop.counter}}.</td>
+        <td>{{i.sezona}}</td>
+        <td>{{i.klub}}</td>
+        <td>{{i.zapasy}}</td>
+        <td>{{i.g}}</td>
+        <td>{{i.a}}</td>
+        <td>{{i.b}}</td>
+        <td>{{i.plusminus}}</td>
+        <td>{{i.v}}</td>
+        <td>{{i.gvp}}</td>
+        <td>{{i.gvo}}</td>
+        <td>{{i.v_g}}</td>
+        <td>{{i.gvot}}</td>
+        <td>{{i.strely}}</td>
+        <td>{{i.perc_strel}}</td>
+        <td>{{i.buly}}</td>
+        
+
+
+    </tr>
+    
+    
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">celkovo</td>
+            <td>{{sumar.szapasy|intcomma}}</td>
+            <td>{{sumar.sg}}</td>
+            <td>{{sumar.sa|intcomma}}</td>
+            <td>{{sumar.sb|intcomma}}</td>
+            <td>{{sumar.splusminus}}</td>
+            <td>{{sumar.sv|intcomma}}</td>
+            <td>{{sumar.sgvp}}</td>
+            <td>{{sumar.sgvo}}</td>
+            <td>{{sumar.sv_g}}</td>
+            <td>{{sumar.sgvot}}</td>
+            <td>{{sumar.sstrely|intcomma}}</td>
+            <td>{{sumar.aperc_strel|floatformat:2}}</td>
+            <td>{{sumar.abuly|floatformat:2}}</td>
+
+
+        </tr>
+    </tfoot>
+</table>
+
+{% endblock content %}

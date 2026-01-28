@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Sezslo{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "golyapp/cze.css" %}">
+{% endblock css_files %}
+{% block content %}
+<div class="tlac">
+    <a class="button" href="{% url "homepage" %}">Návrat</a>
+    <a class="button" href="{% url "archivne" %}">Sezóny</a>
+    <a class="button" href="{% url "klub" %}">Klub</a>
+    <a href="{% url "nation" %}" class="button">Národy</a>
+
+
+</div>    
+
+    <h1>Slováci v NHL počas sezón</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <select name="sezon" onchange="this.form.submit()">
+            {% for sezona in sezo %}
+            <option value="{{sezona}}" {% if sezona == vyber %}selected{% endif %}>{{sezona}}</option>
+            
+            
+            {% endfor %}
+
+
+
+        </select>
+        
+        
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Por.</th>
+                    <th>Meno</th>
+                    <th>Poz.</th>
+                    <th class="vpravo">Z</th>
+                    <th class="vpravo">G</th>
+                    <th class="vpravo">A</th>
+                    <th class="vpravo">B</th>
+                    <th class="vpravo">+-</th>
+                    <th>Vyl.</th>
+                    <th>GvP</th>
+                    <th>GvO</th>
+                    <th>VG</th>
+                    <th>GvOT</th>
+                    <th>S</th>
+                    <th>%s</th>
+                    <th>%b</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for z in zaver %}
+                <tr>
+                    <td>{{forloop.counter}}.</td>
+                    <td><a href="{% url "detp" z.id_player %}">{{z.meno}}</a></td>
+                    <td>{{z.pozicia}}</td>
+                    <td class="vpravo">{{z.sumazapasov}}</td>
+                    <td class="vpravo">{{z.sumagolov}}</td>
+                    <td class="vpravo">{{z.sumaasistencii}}</td>
+                    <td class="vpravo">{{z.sumabodov}}</td>
+                    <td class="vpravo">{{z.sumaplus}}</td>
+                    <td class="vpravo">{{z.sumav}}</td>
+                    <td class="vpravo">{{z.sumagvp}}</td>
+                    <td class="vpravo">{{z.sumagvo}}</td>
+                    <td class="vpravo">{{z.sumav_g}}</td>
+                    <td class="vpravo">{{z.sumagvot}}</td>
+                    <td class="vpravo">{{z.sumastrely}}</td>
+                    <td class="vpravo">{{z.priemerperc|floatformat:1}}</td>
+                    <td class="vpravo">{{z.priemerbuly|floatformat:1}}</td>
+                </tr>    
+               
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                
+                <tr>
+                    <td colspan="3">Slováci celkovo</td>
+                    <td class="vpravo">{{spodok.szapasy}}
+                    <td class="vpravo">{{spodok.sg}}</td>
+                    <td class="vpravo">{{spodok.sa}}</td>
+                    <td class="vpravo">{{spodok.sb}}</td>
+                    <td class="vpravo">{{spodok.splusminus}}</td>
+                    <td class="vpravo">{{spodok.sv}}</td>
+                    <td class="vpravo">{{spodok.sgvp}}</td>
+                    <td class="vpravo">{{spodok.sgvo}}</td>
+                    <td class="vpravo">{{spodok.sv_g}}</td>
+                    <td class="vpravo">{{spodok.sgvot}}</td>
+                    <td class="vpravo">{{spodok.sstrely}}</td>
+                    <td class="vpravo">{{spodok.aperc_strel|floatformat:1}}</td>
+                    <td class="vpravo">{{spodok.abuly|floatformat:1}}</td>
+                    
+                        
+
+                    </td>
+                </tr>
+                
+            </tfoot>
+        </table>
+
+
+
+    </form>
+
+
+
+
+{% endblock content %}
